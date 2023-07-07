@@ -1,0 +1,86 @@
+Domain Driven Design (DDD) Approach
+
+
+This is an approach to develop a loosely coupled micro service or monolithic applications.
+
+When we do know exactly which architecture to follow, ie either monolithic or micro service, at that time if we use DDD approach to build, then it will be easy to convert later into micro services.
+
+The very first step in the DDD approach is to identify the Problem Space:
+
+-> The Problem space/ core business domain is the starting point of DDD approach, it basically identifies the business problem that we intended to solve using DDD.
+
+
+Steps:
+
+1. Identify the problem space / Domain 
+2. Identify the sub domains in our problem space or domain space
+3. The design solution for the identified the problem space is called bounded context. 
+4. ie., if we have a single bounded context for all the sub domains, then it will be a monolithic arch,where each sub domain will become a module 
+
+ or if we have seperate bounded contexts for each sub domain, then it may be like Microservices, where each sub domain will become a seperate service.
+
+
+Domain Model
+
+A domain model is the implementation of the core bussiness logic within the specific bounded context
+
+In bussiness context, this involves the following:
+1. bussiness entities
+2. bussiness rules
+3. bussiness flows
+4. bussiness operations
+5. business events
+
+Techically, the above translates to below terminologies:
+
+1. Aggregrates / Entities / Value Objects
+2.  Domain Rules
+3. Sagas
+4. Commands / Queries
+5. Events
+
+
+To understand in detail, let us consider an order management system, let us take an order which consists of list of order items, to implement in database we usually create two tables
+1. Order with Oid as primary key
+2. OrderItems with Oid as foreign key as one order can contain multiple items.
+
+There will be a 1-m relationship between Order and OrderItems tables.
+
+
+In this case Order table is main/root entity, which has no dependencies, it is called Aggregate.
+
+Usually, Aggregates are primary or principal identifiers to our bounded context
+
+
+Entity objects usually have an identity but these will exists only when its corresponding Aggregate object
+exists, in our example, OrderItems will exists only when Order table exists.
+
+These objects are secondary identifiers to our bounded context.
+
+Value objects have no identity at all, these can be easily replaceable within an instance of root aggregate
+or an entity.
+
+
+Domain rules are nothing but the bussiness rules to follow for your application.
+Eg> In swiggy we cannot place order from two different resturants
+In some banks, credit card or loans will be provided only if they are an existing savings account holders
+etc.,
+
+commands are any kind of operations which affect the state of the Aggregate
+ eg> Adding a new applicant for loan
+     placing an order
+     updating an order
+
+view applicant details, view order cart commands will not effect any state of aggregate, so these are not
+commands
+
+
+Whenever there is a change in state of aggregate then other bussiness sub domains should also know that there
+is change
+
+sagas are nothing but bussiness processes or work flows.
+
+Sagas will react to multiple bussiness events across bounded contexts, 
+and orchestrate the business process by cordinating interactions among these bounded contexts
+
+
